@@ -54,15 +54,28 @@ void updateLamps() {
 void updateColors(const String mode) {
   Lamp L = L1;
   if(mode.equals("static")) {
-    L1.updateCol(r.val, g.val, b.val, w.val);
-    L2.updateCol(r.val, g.val, b.val, w.val);
-    L3.updateCol(r.val, g.val, b.val, w.val);
-    L4.updateCol(r.val, g.val, b.val, w.val);
-    L5.updateCol(r.val, g.val, b.val, w.val);
-    L6.updateCol(r.val, g.val, b.val, w.val);
-    L7.updateCol(r.val, g.val, b.val, w.val);
-    L8.updateCol(r.val, g.val, b.val, w.val);
-    L9.updateCol(r.val, g.val, b.val, w.val);
-    L10.updateCol(r.val, g.val, b.val, w.val);
+    L1.updateCol("static", r.val, g.val, b.val, w.val);
+    L2.updateCol("static", r.val, g.val, b.val, w.val);
+    L3.updateCol("static", r.val, g.val, b.val, w.val);
+    L4.updateCol("static", r.val, g.val, b.val, w.val);
+    L5.updateCol("static", r.val, g.val, b.val, w.val);
+    L6.updateCol("static", r.val, g.val, b.val, w.val);
+    L7.updateCol("static", r.val, g.val, b.val, w.val);
+    L8.updateCol("static", r.val, g.val, b.val, w.val);
+    L9.updateCol("static", r.val, g.val, b.val, w.val);
+    L10.updateCol("static", r.val, g.val, b.val, w.val);
+  }
+
+  if(mode.equals("wheel")) {
+    L1.updateCol("wheel", r.val, g.val, b.val, w.val);
+    L2.updateCol("wheel", r.val, g.val, b.val, w.val);
+    L3.updateCol("wheel", r.val, g.val, b.val, w.val);
+    L4.updateCol("wheel", r.val, g.val, b.val, w.val);
+    L5.updateCol("wheel", r.val, g.val, b.val, w.val);
+    L6.updateCol("wheel", r.val, g.val, b.val, w.val);
+    L7.updateCol("wheel", r.val, g.val, b.val, w.val);
+    L8.updateCol("wheel", r.val, g.val, b.val, w.val);
+    L9.updateCol("wheel", r.val, g.val, b.val, w.val);
+    L10.updateCol("wheel", r.val, g.val, b.val, w.val);
   }
 }

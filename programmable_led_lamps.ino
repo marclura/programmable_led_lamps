@@ -84,7 +84,7 @@ class Lamp {
   public:
   
   unsigned int start, last;
-  byte id, len, P_id, r, g, b, w;
+  byte id, len, P_id, r, g, b, w, bright;
 
   Lamp(const byte id_in, const byte P_in, const unsigned int start_in, const byte length_in) {
     id = id_in;
@@ -94,11 +94,18 @@ class Lamp {
     last = start + len - 1;
   }
 
-  void updateCol(byte const r_in, byte const g_in, byte const b_in, byte const w_in) {
-    r = r_in;
-    g = g_in;
-    b = b_in;
-    w = w_in;
+  void updateCol(const String mode, byte const r_in, byte const g_in, byte const b_in, byte const w_in) {
+    if(mode.equals("static")) {
+      r = r_in;
+      g = g_in;
+      b = b_in;
+      w = w_in;
+    } else if(mode.equals("wheel")) {
+      r = r_in*bright/255;
+      g = g_in*bright/255;
+      b = b_in*bright/255;
+      w = w_in*bright/255;
+    }
   }
 
   void setColors() {
@@ -138,6 +145,11 @@ const int numC = n * lampsC;
 // number of lamps
 const byte lamps = 10;
 
+// -> wave setting in wave tab
+// wave timing
+unsigned long delay_wave;
+unsigned long curr_time;
+unsigned long old_millis;
 
 // neopixel strips
 Adafruit_NeoPixel P1 = Adafruit_NeoPixel(numA, pin_data_A, NEO_GRBW + NEO_KHZ800);
@@ -151,8 +163,8 @@ Pot g = Pot('g', A1);
 Pot b = Pot('b', A2);
 Pot w = Pot('w', A3);
 Pot in = Pot('i', A4);
-Pot out = Pot('o', A6);   /// TO CHANGE!!!!!!! A6 -> A5
-Pot s = Pot('s', A5);   /// TO CHANGE!!!!!!!  A5 -> A6
+Pot out = Pot('o', A5);   /// TO CHANGE!!!!!!! A6 -> A5
+Pot s = Pot('s', A6);   /// TO CHANGE!!!!!!!  A5 -> A6
 
 // Lamps
 Lamp L1 = Lamp(1, 1, 0*n, n);
@@ -167,6 +179,7 @@ Lamp L9 = Lamp(9, 3, 0*n, n);
 Lamp L10 = Lamp(10, 3, 1*n, n);
 
 
+// SETUP
 void setup() {
   Serial.begin(115200);
 
@@ -177,6 +190,8 @@ void setup() {
   P1.show();
   P2.show();
   P3.show();
+
+  waveOn();
 
 }
 
@@ -190,10 +205,21 @@ void loop() {
       updateLamps();
     }
   } else {  // wheel mode
-    if(updatePots("fast")) {  // change only when pots changes
-      //updateColors("wheel");
-      //updateLamps();
+    updatePots("fast");
+
+    s.readPot("fast");  // read spped pot
+    delay_wave = s.val/4;
+    
+    // sepeed regualtion
+    curr_time = millis();
+    if(curr_time-old_millis > delay_wave) {
+      waveOn();
+      updateColors("wheel");
+      updateLamps();
+
+      old_millis = curr_time;
     }
+    
   }
     
 }
